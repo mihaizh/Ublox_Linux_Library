@@ -76,30 +76,6 @@ void Stream::close_comm()
     m_data->m_SerialFd = INVALID_HANDLE_VALUE;
 }
 
-std::string GetLastErrorAsString()
-{
-	//Get the error message ID, if any.
-	DWORD errorMessageID = ::GetLastError();
-	if (errorMessageID == 0) {
-		return std::string(); //No error message has been recorded
-	}
-
-	LPSTR messageBuffer = nullptr;
-
-	//Ask Win32 to give us the string version of that message ID.
-	//The parameters we pass in, tell Win32 to create the buffer that holds the message for us (because we don't yet know how long the message string will be).
-	size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-		NULL, errorMessageID, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&messageBuffer, 0, NULL);
-
-	//Copy the error message into a std::string.
-	std::string message(messageBuffer, size);
-
-	//Free the Win32's string's buffer.
-	LocalFree(messageBuffer);
-
-	return message;
-}
-
 bool Stream::open_comm()
 {
 	const bool flowctrl = false; // TODO: Which one?
@@ -124,7 +100,6 @@ bool Stream::open_comm()
 
 	if (m_data->m_SerialFd == INVALID_HANDLE_VALUE)
 	{
-		printf("1\n");
 		return false;
 	}
 
@@ -133,12 +108,8 @@ bool Stream::open_comm()
 	port_settings.DCBlength = sizeof(port_settings);
 
 	const auto mode_str = mode.str();
-	printf("%s\n", mode_str.c_str());
 	if (!BuildCommDCBA(mode_str.c_str(), &port_settings))
 	{
-		printf("2\n");
-		auto err = GetLastErrorAsString();
-		printf("%s\n", err.c_str());
 		CloseHandle(m_data->m_SerialFd);
 		return false;
 	}
@@ -151,7 +122,6 @@ bool Stream::open_comm()
 
 	if (!SetCommState(m_data->m_SerialFd, &port_settings))
 	{
-		printf("3\n");
 		CloseHandle(m_data->m_SerialFd);
 		return false;
 	}
@@ -166,7 +136,6 @@ bool Stream::open_comm()
 
 	if (!SetCommTimeouts(m_data->m_SerialFd, &Cptimeouts))
 	{
-		printf("4\n");
 		CloseHandle(m_data->m_SerialFd);
 		return false;
 	}
