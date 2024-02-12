@@ -15,4 +15,8 @@ typedef bool boolean;
 
 #define I2C_DEV "/dev/ublox_i2c"
 
+#ifdef WIN32
+#define __attribute__(ATTR) 
+#endif
+
 #endif // COMMON_H__
