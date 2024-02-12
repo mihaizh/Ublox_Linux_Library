@@ -92,6 +92,9 @@ class Print
     size_t println(double, int = 2);
     //size_t println(const Printable&);
     size_t println(void);
+#ifdef WIN32
+    size_t println(size_t n) { return println((unsigned long)n); }
+#endif
 
     virtual void flush() { /* Empty implementation for backward compatibility */ }
 };

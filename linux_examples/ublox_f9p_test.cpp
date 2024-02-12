@@ -30,7 +30,7 @@ int main(int argc, char** argv)
         return 0;
     } else if (argc == 2) {
         for(int counter=0;counter<argc;counter++) 
-            printf("\nargv[%d]: %s",counter,argv[counter]);        
+            printf("\nargv[%d]: %s\n",counter,argv[counter]);        
     } else if(argc >= 3) {
         printf ("\nMore number of arguments...");
         return 0;
@@ -77,10 +77,10 @@ int main(int argc, char** argv)
           else if (solnType == 1) printf ("&&& DGNSS/Float &&&\n");
           else if (solnType == 2) printf ("*** DGNSS/Fix ***\n");
           printf ("\n--------------------------------------------------------\n");
-          usleep(50);
+          delayMicroseconds(50);
         }
 
-        usleep(25);
+        delayMicroseconds(25);
     }
 
     return 1;

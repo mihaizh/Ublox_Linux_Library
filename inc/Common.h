@@ -1,6 +1,8 @@
 #ifndef COMMON_H__
 #define COMMON_H__
 
+#include <cstdint>
+
 typedef uint8_t byte;
 typedef bool boolean;
 
